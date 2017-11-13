@@ -30,7 +30,7 @@
 											</div>
 											<div class="form-group">
 											  <label for="contract-timeframe">Package:</label>
-											  <select class="form-control" name="package" id="contract-timeframe">
+											  <select class="form-control" name="package" id="contract-timeframe"> 
 												<option value="2">Ultimate</option>
 												<option value="3">Premium</option>
 											  </select>
