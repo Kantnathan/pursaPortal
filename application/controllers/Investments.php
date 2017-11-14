@@ -1,8 +1,8 @@
-<?php 
+<?php
 
 	class Investments extends CI_Controller
 	{
-		
+
 		public function investment()
 		{
 
@@ -29,7 +29,7 @@
 						$duration = $this->input->post('duration');
 
 						$client_id = $this->session->userdata('client_id');
-						
+
 						$date = $this->input->post('date');
 
 
@@ -37,7 +37,7 @@
 						$package_info = $this->investment_model->get_package($amount, $duration);
 
 						if ($package_info) {
-							
+
 							$package = $package_info['name'];
 
 						} else{
@@ -51,7 +51,7 @@
 
 						$this->session->set_userdata('client_package', $package);
 
-						
+
 
 						$invest = $this->investment_model->invest($client_id, $amount, $payout, $duration, $date);
 
@@ -67,7 +67,7 @@
 							$generate = $this->investment_model->generate_profits($client_id, $investment_id, $amount, $duration, $interest, $date);
 
 							if ($generate) {
-								
+
 								// Set message
 									$this->session->set_flashdata('code_check', ' Profits generated  Successfully!');
 							} else{
@@ -75,24 +75,24 @@
 								$this->session->set_flashdata('amount_error', 'Profits Generated Unsuccessfully!');
 							}
 
-							
+
 							$this->session->set_userdata('client_interest', $interest);
 							$this->session->set_userdata('client_amount', $amount);
 							// $this->session->set_userdata('client_payout', $payout);
 							// $this->session->set_userdata('client_duration', $duration);
 
 							redirect('displays');
-							
+
 						} else {
 
 							redirect('investments/investment');
-						}	
+						}
 					}
 			} else {
 
 				redirect('');
 			}
-					
+
 		}
 
 		public function new_investment($client_id = NULL)
@@ -125,7 +125,7 @@
 							//$package_info = $this->investment_model->get_package($amount, $duration, $package);
 							$package_id = $this->input->post('package');
 
-							/*if ($package_info) {	
+							/*if ($package_info) {
 								$package = $package_info['name'];
 							} else{
 
@@ -159,23 +159,23 @@
 									$this->session->set_flashdata('amount_error', 'Profits Generated Unsuccessfully!');
 								}*/
 
-								
+
 								$this->session->set_userdata('client_interest', $interest);
 								$this->session->set_userdata('client_amount', $amount);
 								// $this->session->set_userdata('client_payout', $payout);
 								// $this->session->set_userdata('client_duration', $duration);
 
-								redirect('displays/user_investments/'.$client_id);	
+								redirect('displays/user_investments/'.$client_id);
 							} else {
 								redirect('investments/new_investment/'.$client_id);
-							}	
+							}
 						}
 				} else {
 					redirect('');
 				}
 
 
-				
+
 			} else{
 
 				$this->session->set_userdata('clientsss_id', $client_id);
@@ -191,11 +191,11 @@
 
 
 		public function edit_investment($investment_id = NULL)
-		{	
+		{
 
 
 			if ($investment_id == NULL) {
-				
+
 
 				if ($this->session->userdata('logged_in') && ($this->session->userdata('user_type') == 'admin' || $this->session->userdata('user_type') == 'superadmin') ) {
 
@@ -231,7 +231,7 @@
 						$package_info = $this->investment_model->get_package($amount, $duration);
 
 						if ($package_info) {
-							
+
 							$package = $package_info['name'];
 
 						} else{
@@ -245,7 +245,7 @@
 
 						$this->session->set_userdata('client_package', $package);
 
-						
+
 
 						$invest = $this->investment_model->edit_invest($client_id, $amount, $payout, $duration, $investment_id);
 
@@ -263,7 +263,7 @@
 							$generate = $this->investment_model->generate_profits($client_id, $investment_id, $amount, $duration, $interest);
 
 							if ($generate) {
-								
+
 								// Set message
 									$this->session->set_flashdata('code_check', ' Profits generated  Successfully!');
 							} else{
@@ -271,17 +271,17 @@
 								$this->session->set_flashdata('amount_error', 'Profits Generated Unsuccessfully!');
 							}
 
-							
+
 							$this->session->set_userdata('client_interest', $interest);
 							$this->session->set_userdata('client_amount', $amount);
 							// $this->session->set_userdata('client_payout', $payout);
-							
+
 
 							// Set message
 							$this->session->set_flashdata('user_registered', $this->input->post('user_type').' Investment Topup Successfully!');
 
 							redirect('displays/users');
-							
+
 						} else {
 
 							$this->session->set_flashdata('amount_error', 'Investment Topup Failed!');
@@ -292,9 +292,9 @@
 
 
 
-						
+
 					}
-					
+
 				} else {
 
 					redirect('');
@@ -319,14 +319,14 @@
 					$this->session->set_userdata('client_amount', $set_values['amount']);
 					$this->session->set_userdata('client_payout', $set_values['payout']);
 					$this->session->set_userdata('client_duration', $set_values['duration']);
-					
+
 					// Load View
 					$data['title'] = 'Topup Investment';
 
 					$this->load->view('templates/header');
 					$this->load->view('investments/edit_investment', $data);
 					$this->load->view('templates/footer');
-					
+
 				} else {
 
 
@@ -335,7 +335,7 @@
 					redirect('displays/users');
 				}
 
-				
+
 			}
 
 
@@ -380,7 +380,7 @@
 						$package_info = $this->investment_model->get_package($amount, $duration);
 
 						if ($package_info) {
-							
+
 							$package = $package_info['name'];
 
 						} else{
@@ -394,7 +394,7 @@
 
 						$this->session->set_userdata('client_package', $package);
 
-						
+
 
 						$invest = $this->investment_model->edit($client_id, $amount, $payout, $duration);
 
@@ -406,47 +406,60 @@
 
 							$interest = $this->investment_model->get_interest($duration, $payout, $package_id);
 
-							
+
 							$this->session->set_userdata('client_interest', $interest);
 							$this->session->set_userdata('client_amount', $amount);
 							// $this->session->set_userdata('client_payout', $payout);
-							
+
 
 							// Set message
 							$this->session->set_flashdata('user_registered', $this->input->post('user_type').' Investment Edited Successfully!');
 
 							redirect('displays');
-							
+
 						} else {
 
 							$this->session->set_flashdata('amount_error', 'Investment Edit Failed!');
 
 							redirect('investments/edit');
-						}					
+						}
 					}
 			} else {
 
 				redirect('');
 			}
-					
+
 		}
-		
-		public function paidprofit($profit_id, $user_id = null)
+
+		public function appaidprofit($profit_id, $user_id = null)
 		{
-			if ($this->session->userdata('logged_in') && ($this->session->userdata('user_type') == 'admin' || $this->session->userdata('user_type') == 'superadmin') ) 
+			if ($this->session->userdata('logged_in') && $this->session->userdata('user_right') > 1 )
 			{
-				
-				$this->investment_model->markProfitAsPaid($profit_id);
+
+				$this->investment_model->markProfitAsAppaid($profit_id);
 				redirect('displays/profitReports');
-				
+
 			} else {
 				redirect('');
 			}
 		}
-		
+
+		public function paidprofit($profit_id, $user_id = null)
+		{
+			if ($this->session->userdata('logged_in') && $this->session->userdata('user_right') > 2 )
+			{
+
+				$this->investment_model->markProfitAsPaid($profit_id);
+				redirect('displays/profitReports');
+
+			} else {
+				redirect('');
+			}
+		}
+
 		public function unpaidprofit($profit_id, $user_id = null)
 		{
-			if ($this->session->userdata('logged_in') && ($this->session->userdata('user_type') == 'superadmin') ) 
+			if ($this->session->userdata('logged_in') && ($this->session->userdata('user_type') == 'superadmin') )
 			{
 				$this->investment_model->markProfitAsUnPaid($profit_id);
 				redirect('displays/profitReports');
@@ -454,9 +467,9 @@
 				redirect('');
 			}
 		}
-		
+
 		public function deleteInvestment ($investment_id) {
-			if ($this->session->userdata('logged_in') && ($this->session->userdata('user_type') == 'admin' || $this->session->userdata('user_type') == 'superadmin') ) 
+			if ($this->session->userdata('logged_in') && ($this->session->userdata('user_type') == 'admin' || $this->session->userdata('user_type') == 'superadmin') )
 			{
 				$this->investment_model->deleteInvestment($investment_id);
 				redirect('displays/investmentReports');
@@ -464,9 +477,9 @@
 				redirect('');
 			}
 		}
-		
+
 		public function approveInvestment ($investment_id) {
-			if ($this->session->userdata('logged_in') && ($this->session->userdata('user_right') > 2) ) 
+			if ($this->session->userdata('logged_in') && ($this->session->userdata('user_right') > 2) )
 			{
 				if($this->investment_model->approveInvestment($investment_id)) {
 					$this->session->set_flashdata('code_check', ' Profits generated  Successfully!');
@@ -476,9 +489,9 @@
 				redirect('');
 			}
 		}
-		
+
 		public function editPackages ($pool_id, $package_id = null) {
-			if ($this->session->userdata('logged_in') && ($this->session->userdata('user_type') == 'admin' || $this->session->userdata('user_type') == 'superadmin') ) 
+			if ($this->session->userdata('logged_in') && ($this->session->userdata('user_type') == 'admin' || $this->session->userdata('user_type') == 'superadmin') )
 			{
 				if(isset($package_id) && $package_id == 1) {
 					$this->form_validation->set_rules('min', 'Min. Amount', 'required');

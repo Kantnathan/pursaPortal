@@ -1,8 +1,8 @@
 			    <?php //$user_info = $this->display_model->get_user($user);
 				//echo $user_info['name'].' | '.$user_info['email'].' | '.$user_info['number'].' | '.$user_info['visacard'].' | ';
-				
-				?>	
-				<!--div class="row"> 
+
+				?>
+				<!--div class="row">
 				<div class="col-lg-6">
 				<span class="user-info"><strong>Name: </strong><?php //echo $user_info['name']; ?></span></br>
 				<span class="user-info"><strong>Email:</strong> <?php //echo $user_info['email']; ?></span></br>
@@ -41,14 +41,16 @@
 
 											<h3>No Investments</h3>
 										<?php else: ?>
-											
-										<?php foreach($investments as $investment) : 
+
+										<?php foreach($investments as $investment) :
 											$client_info = $this->display_model->get_user($investment['client_id']); ?>
                                             <tr>
 												<td><a href="<?php echo "user_investments/".$investment['client_id']; ?>"><?php echo $client_info['name']; ?></a></td>
 												<td><strong><?php echo date( 'd-m-Y', strtotime($investment['starting_date']));  ?></strong></td>
                                                 <td><strong><?php echo number_format($investment['amount'], 0, ',', ' ');  ?> F</strong></td>
-                                                <td><strong><?php echo $investment['package_type'];  ?></strong></td>
+                                                <td><strong><?php if($investment['package_type'] == '3') {echo 'PREMIUM';}
+																								else if($investment['package_type'] == '2') {echo 'ULTIMATE';}
+																								else { echo $investment['package_type'];}  ?></strong></td>
                                                 <td><strong><?php echo $investment['duration'].' Months';  ?></strong></td>
 												<td><strong><?php echo $investment['interest'].'%';  ?></strong></td>
 												<td><strong><?php echo (($investment['interest']*$investment['amount'])/100).' F';  ?></strong></td>

@@ -1,8 +1,8 @@
 			    <?php //$user_info = $this->display_model->get_user($user);
 				//echo $user_info['name'].' | '.$user_info['email'].' | '.$user_info['number'].' | '.$user_info['visacard'].' | ';
-				
-				?>	
-				<!--div class="row"> 
+
+				?>
+				<!--div class="row">
 				<div class="col-lg-6">
 				<span class="user-info"><strong>Name: </strong><?php //echo $user_info['name']; ?></span></br>
 				<span class="user-info"><strong>Email:</strong> <?php //echo $user_info['email']; ?></span></br>
@@ -34,7 +34,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-									<?php 
+									<?php
 										$totalInvestment =  0;
 										$investmentcount = 0;
 										$investmentsCompleted = 0;
@@ -42,13 +42,13 @@
 
 									 ?>
 									<?php if ($investments === FALSE): ?>
-										
+
 										<h3>No Investments</h3>
 									<?php else: ?>
-									
+
 									<?php foreach($investments as $investment) : ?>
-                                        
-										<?php 
+
+										<?php
 											$totalInvestment = $totalInvestment + $investment['amount'];
 											if ($investment['validity'] === FALSE) {
 												$investmentsCompleted++;
@@ -56,12 +56,12 @@
 											$investmentcount++;
 											$investmentsPending = $investmentcount - $investmentsCompleted;
 										?>
-                                            
+
 									<?php endforeach; ?>
 
 									<?php endif ?>
 									<tr>
-										
+
                                         <td><strong><?php echo number_format($totalInvestment, 0, ',', ' ');  ?> F</strong></td>
                                         <td><strong><?php echo $investmentcount; ?></strong></td>
                                         <td><strong><?php echo $investmentsPending; ?></strong></td>
@@ -91,7 +91,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-									<?php 
+									<?php
 										$totalProfits =  0;
 										$profitsCount = 0;
 										$profitsPaid = 0;
@@ -104,13 +104,13 @@
 
 									 ?>
 									<?php if ($profits === FALSE): ?>
-										
+
 										<h3>No Profits</h3>
 									<?php else: ?>
-									
+
 									<?php foreach($profits as $profit) : ?>
-                                        
-										<?php 
+
+										<?php
 
 
 											$totalProfits = $totalProfits + $profit['amount'];
@@ -131,14 +131,14 @@
 												// echo "test";
 												$profitsDue = $profitsDue + $profit['amount'];
 											}
-											
+
 										?>
-                                            
+
 									<?php endforeach; ?>
 
 									<?php endif ?>
 									<tr>
-										
+
                                         <td><strong><?php echo number_format($totalProfits, 0, ',', ' ');  ?> F</strong></td>
                                         <td><strong><?php echo $profitsCount; ?></strong></td>
                                         <td><strong><?php echo $profitsDue; ?></strong></td>
@@ -170,7 +170,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-									<?php 
+									<?php
 										$premium =  0;
 										$business = 0;
 										$starter = 0;
@@ -178,13 +178,13 @@
 
 									 ?>
 									<?php if ($investments === FALSE): ?>
-										
+
 										<h3>No Packages to show</h3>
 									<?php else: ?>
-									
+
 									<?php foreach($investments as $investment) : ?>
-                                        
-										<?php 
+
+										<?php
 
 
 											$totalInvestment = $totalInvestment + $investment['amount'];
@@ -193,21 +193,21 @@
 
 												$premium++;
 											} elseif ($investment['package_type'] == 'business') {
-												
+
 												$business++;
 											} else{
 
 												$starter++;
 											}
 
-											
+
 										?>
-                                            
+
 									<?php endforeach; ?>
 
 									<?php endif ?>
 									<tr>
-										
+
                                         <!-- <td><strong><?php echo number_format($totalInvestment, 0, ',', ' ');  ?> F</strong></td> -->
                                         <td><strong><?php echo $premium; ?></strong></td>
                                         <td><strong><?php echo $business; ?></strong></td>
@@ -246,14 +246,16 @@
 
 											<h3>No Investments</h3>
 										<?php else: ?>
-											
-										<?php foreach($investments as $investment) : 
+
+										<?php foreach($investments as $investment) :
 											$client_info = $this->display_model->get_user($investment['client_id']); ?>
 											<tr>
 												<td><a href="<?php echo "user_investments/".$investment['client_id']; ?>"><?php echo $client_info['name']; ?></a></td>
 												<td><strong><?php echo date( 'd-m-Y', strtotime($investment['starting_date']));  ?></strong></td>
                                                 <td><strong><?php echo number_format($investment['amount'], 0, ',', ' ');  ?> F</strong></td>
-                                                <td><strong><?php echo $investment['package_type'];  ?></strong></td>
+																								<td><strong><?php if($investment['package_type'] == '3') {echo 'PREMIUM';}
+																								else if($investment['package_type'] == '2') {echo 'ULTIMATE';}
+																								else { echo $investment['package_type'];}  ?></strong></td>
                                                 <td><strong><?php echo $investment['duration'].' Months';  ?></strong></td>
 												<td><strong><?php echo $investment['interest'].'%';  ?></strong></td>
 												<td><strong><?php echo (($investment['interest']*$investment['amount'])/100).' F';  ?></strong></td>
@@ -300,25 +302,29 @@
 
 											<h3>No PROFIT</h3>
 										<?php else: ?>
-											
-										<?php foreach($profits as $profit) : 
+
+										<?php foreach($profits as $profit) :
 											$client_info = $this->display_model->get_user($profit['client_id']); ?>
                                             <tr>
 												<td><a href="<?php echo "user_investments/".$profit['client_id']; ?>"><?php echo $client_info['name']; ?></a></td>
                                                 <td><strong><?php echo number_format($profit['amount'], 0, ',', ' ');  ?> F</strong></td>
                                                 <td><strong><?php echo $profit['duration'].' Ms';  ?></strong></td>
 												<td><strong><?php echo date('d-m-Y', strtotime($profit['due_date']));  ?></strong></td>
-                                                <td>
-												<?php if(($profit['validity'] == 1) && ($this->session->userdata('user_type') == 'admin' || $this->session->userdata('user_type') == 'superadmin')) { ?>
-													<a href="<?php echo base_url(); ?>investments/paidprofit/<?php echo $profit['id'].'/'.$profit['client_id']; ?>"><span class="badge badge-warning">Pending</span></a>
-												<?php } else if($profit['validity'] == 1) { ?>
-													<span class="badge badge-warning">Pending</span>
-												<?php } else if ($profit['validity'] == 0 && $this->session->userdata('user_type') == 'superadmin') { ?>
-													<a href="<?php echo base_url(); ?>investments/unpaidprofit/<?php echo $profit['id'].'/'.$profit['client_id']; ?>"><span class="badge badge-success">Paid</span></a>
-												<?php } else { ?>
-													<span class="badge badge-success">Paid</span>
-												<?php } ?>
-                                                </td>
+												<td>
+<?php if(($profit['validity'] == 1) && $this->session->userdata('user_right') > 1) { ?>
+	<a href="<?php echo base_url(); ?>investments/appaidprofit/<?php echo $profit['id'].'/'.$profit['client_id']; ?>"><span class="badge badge-warning">Pending</span></a>
+<?php } else if($profit['validity'] == 1) { ?>
+	<span class="badge badge-warning">Pending</span>
+<?php } else if ($profit['validity'] == 0 && $this->session->userdata('user_right') > 2) { ?>
+	<a href="<?php echo base_url(); ?>investments/unpaidprofit/<?php echo $profit['id'].'/'.$profit['client_id']; ?>"><span class="badge badge-success">Paid</span></a>
+<?php } else if($profit['validity'] == 0)  { ?>
+	<span class="badge badge-success">Paid</span>
+<?php } else if ($profit['validity'] == 2 && $this->session->userdata('user_right') > 2) { ?>
+	<a href="<?php echo base_url(); ?>investments/paidprofit/<?php echo $profit['id'].'/'.$profit['client_id']; ?>"><span class="badge badge-warning">Pending Approval</span></a>
+<?php } else { ?>
+	<span class="badge badge-warning">Pending Approval</span>
+<?php } ?>
+												</td>
 												<td><?php echo $client_info['visacard']; $total = $total + $profit['amount'];?></td>
                                             </tr>
 										<?php endforeach; ?>
@@ -333,5 +339,3 @@
 					</div>
 					</div>
 				</div>
-						
-					
