@@ -16,14 +16,14 @@
 
 			$data['title'] = ucfirst($page);
 
-			$this->load->view('templates/header');
+			/*$this->load->view('templates/header');
 			$this->load->view('users/'.$page, $data);
-			$this->load->view('templates/footer');
+			$this->load->view('templates/footer');*/
 		}
 
 		// Register user
 		public function register(){
-			
+
 			if ($this->session->userdata('logged_in') && ($this->session->userdata('user_type') == 'admin' || $this->session->userdata('user_type') == 'superadmin') ) {
 				$data['title'] = 'Sign Up';
 
@@ -50,7 +50,7 @@
 					$client_email = $this->input->post('email');
 					$client_number = $this->input->post('number');
 					$visa = $this->input->post('visacard');
-					
+
 					$this->user_model->register();
 
 					$user_info = $this->user_model->user_info($client_username, $client_number);
@@ -86,7 +86,7 @@
 				// Useting pervious info about client
 				$this->session->unset_userdata('client_name');
 				$this->session->unset_userdata('client_email');
-				$this->session->unset_userdata('client_number'); 
+				$this->session->unset_userdata('client_number');
 
 				$this->form_validation->set_rules('name', 'Name', 'required');
 				$this->form_validation->set_rules('username', 'Username', 'required|callback_check_username_exists');
@@ -108,14 +108,14 @@
 					$client_username = $this->input->post('username');
 					$client_email = $this->input->post('email');
 					$client_number = $this->input->post('number');
-					
+
 					$this->user_model->edit_register();
 
 					$user_info = $this->user_model->user_info($client_username, $client_number);
 
 
 					if ($user_info) {
-						
+
 						$client_id = $user_info['id'];
 
 
@@ -150,8 +150,8 @@
 		public function create_user(){
 
 			if ($this->session->userdata('logged_in') && ($this->session->userdata('user_type') == 'admin' || $this->session->userdata('user_type') == 'superadmin') ) {
-				
-			
+
+
 
 				$data['title'] = 'Sign Up';
 
@@ -176,16 +176,16 @@
 
 
 					if ($create_user) {
-						
+
 						// Set message
 						$this->session->set_flashdata('user_registered', $this->input->post('user_type').' Account Created Successfully! Now LogIn');
-							
+
 						redirect('');
 					} else {
 
 						// Set message
 						$this->session->set_flashdata('user_registered', $this->input->post('user_type').' Account Creation Failed!');
-							
+
 						redirect('users/create_user');
 
 
@@ -202,7 +202,7 @@
 		public function login(){
 
 			if ($this->session->userdata('logged_in')) {
-				
+
 				redirect('');
 			}
 
@@ -217,7 +217,7 @@
 				//$this->load->view('templates/footer');
 				// echo "here";
 			} else {
-				
+
 				// Get username
 				$username = $this->input->post('username');
 				// Get and encrypt the password
@@ -226,8 +226,8 @@
 				// Login user
 				$user_details = $this->user_model->login($username, $password);
 
-				// do first validation here for the account active status here by 
-				// using if and then redirect with specific error asking to contact 
+				// do first validation here for the account active status here by
+				// using if and then redirect with specific error asking to contact
 				// admin
 
 				if($user_details){
@@ -236,7 +236,7 @@
 					// echo $user_details['id'];
 					// echo $user_details['user_type'];
 					// Get user type
-					
+
 					$id = $user_details['id'];
 					$name = $user_details['name'];
 					$number = $user_details['number'];
@@ -273,7 +273,7 @@
 					$this->session->set_flashdata('login_failed', 'Login is invalid try again');
 
 					redirect('users/home');
-				}		
+				}
 			}
 		}
 
@@ -320,7 +320,7 @@
 
 		// 		if ($user_id) {
 
-					
+
 
 		// 		} else{
 
@@ -331,7 +331,7 @@
 		// 		}
 
 
-				
+
 		// 		// $this->session->set_userdata('client_codeout', $decoder);
 
 		// 	} else {
@@ -345,7 +345,7 @@
 		{
 			if ($this->session->userdata('logged_in') && ($this->session->userdata('user_type') == 'admin' || $this->session->userdata('user_type') == 'superadmin') ) {
 
-				
+
 				// Encrypting the client id
 
 				$encode = $this->mc_encrypt($this->session->userdata('client_id'), ENCRYPTION_KEY);
@@ -363,30 +363,30 @@
 				// $code = str_replace('_', '|', $coded);
 
 				// $decoder = $this->mc_decrypt($code, ENCRYPTION_KEY);
-				
+
 
 				// Creating Unique user code
-				
+
 				$code = strtoupper(random_string('alnum',6));
 
 				// check if code exist in database
-				$check_code = $this->user_model->check_code_exist($code); 
-				
+				$check_code = $this->user_model->check_code_exist($code);
+
 				while ($check_code == false) {
 
 					$code = strtoupper(random_string('alnum',6));
 
 					$check_code = $this->user_model->check_code_exist($code);
 
-				} 
+				}
 
 
 				$user_code = $code;
-				
 
 
-				// Sending Email Here 
-				
+
+				// Sending Email Here
+
 
 
 
@@ -433,16 +433,16 @@
 
 				// More headers
 				$headers .= 'From: <info@pursa.com>' . "\r\n";
-				
+
 								$this->load->library('email');
-				
+
 				$config['protocol'] = 'smtp';
 				$config['smtp_host'] = 'mail.pursa.co';
 				$config['smtp_user'] = 'noreply@pursa.co';
 				$config['smtp_pass'] = '-=I)xuanFx.?';
 				$config['smtp_port'] = '587';
 				$this->email->initialize($config);
-				
+
 				$this->email->from('noreply@pursa.co', 'Pursa.co');
 				$this->email->to($to);
 				$this->email->subject('Your Login Details to Pursa Portal');
@@ -467,9 +467,9 @@
 				$this->session->unset_userdata('client_start_date');
 				$this->session->unset_userdata('client_first_payout');
 				$this->session->unset_userdata('client_last_payout');
-				 
-				 
-				
+
+
+
 
 				// Set message
 				$this->session->set_flashdata('user_loggedin', 'Mail Sent!');
@@ -530,7 +530,7 @@
 				redirect('');
 			}
 		}
-		
+
 		// Check if visacard exists
 		public function check_visacard_exists($visacard){
 			if ($this->session->userdata('logged_in') && ($this->session->userdata('user_type') == 'admin' || $this->session->userdata('user_type') == 'superadmin') ) {
@@ -550,7 +550,7 @@
 		public function check_user_type($user_type){
 			if ($this->session->userdata('logged_in') && ($this->session->userdata('user_type') == 'admin' || $this->session->userdata('user_type') == 'superadmin') ) {
 				$this->form_validation->set_message('check_user_type', 'User Credentials Insufficient!');
-				
+
 				if($user_type){
 					return true;
 				} else {
@@ -566,7 +566,7 @@
 		// Encrypt Function
 		public  function mc_encrypt($encrypt, $key)
 		{
-			
+
 			if ($this->session->userdata('logged_in')) {
 
 
@@ -579,7 +579,7 @@
 				    return $encoded;
 
 			}
-			
+
 		}
 
 
@@ -604,7 +604,7 @@
 				    return $decrypted;
 
 			}
-			
+
 		}
 
 
